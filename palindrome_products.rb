@@ -5,6 +5,6 @@ end
 
 products = []
 (100..999).each { |a| (a..999).each { |b| products << a * b } }
-puts products.reverse.find { |p| is_palindrome?(p) }
+puts products.sort.reverse.find { |p| is_palindrome?(p) }
 
 
