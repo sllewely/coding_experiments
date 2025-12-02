@@ -12,11 +12,12 @@ def op(rot)
 
   # Returns MatchData ie #<MatchData "R37" 1:"R" 2:"37">
   captures = ROT_STRING.match(rot)
+  puts captures.captures.inspect
   match = captures[0]
   dir = captures[1]
   steps = captures[2].to_i
 
-  puts match
+  # puts match
 
   if (dir == "L")
     @pos -= steps
