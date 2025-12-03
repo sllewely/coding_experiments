@@ -46,6 +46,11 @@ File.foreach('day1input.txt').with_index do |line, i|
 end
 ```
 
+
+**if you're using line.length don't forget to chomp to remove nl**
+
+```line.chomp```
+
 ### file is one line
 
 ```ruby
