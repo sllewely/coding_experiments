@@ -19,15 +19,19 @@ def calc_neighbors(r, c)
 end
 
 def count_accessible()
+  sum_this_pass = 0
   (0...@storage.length).each do |r|
     (0...@storage[0].length).each do |c|
       next unless @storage[r][c] == 1
       count = calc_neighbors(r, c)
       if count.sum < 4
+        @storage[r][c] = 0
+        sum_this_pass += 1
         @sum += 1
       end
     end
   end
+  sum_this_pass
 end
 
 File.foreach('day4input.txt').with_index do |line, i|
@@ -36,5 +40,7 @@ end
 
 puts calc_neighbors(0, 2)
 
-count_accessible()
+while (count_accessible() > 0) do
+
+end
 puts @sum
