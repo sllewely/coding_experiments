@@ -80,7 +80,7 @@ def entire_problem
   @circuits = (0...@items.length).to_a
 
   # create circuits based on minimum distances
-  10.times { create_circuit(distance_map) }
+  1000.times { create_circuit(distance_map) }
 
   puts "---"
 
