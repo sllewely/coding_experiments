@@ -1,36 +1,34 @@
-# this is terrible, see my optimized solution 7c
-
 
 @items = []
 @count = 0
 
-def splits
-  width = @items[0].length
-  height = @items.length
+@amor = {}
 
-  #find the start
+def traverse
   s = @items[0].index('S')
-  puts s
-  tachyons = [s]
+  sum = bottom_up_traverse(1, s)
 
-  @items[1..height].each do |row|
-    # puts tachyons.inspect
-    # puts row.inspect
-    new_tachyons = []
-    tachyons.each do |t|
-      if row[t] == '^'
-        @count += 1
-        new_tachyons << t - 1
-        new_tachyons << t + 1
-      else
-        new_tachyons << t
-      end
-    end
+end
 
-    tachyons = new_tachyons
+def bottom_up_traverse(r, i)
+  return 1 if r >= @items.length
 
+  sum = 0
+
+  if @amor.has_key?([r, i])
+    return @amor[[r, i]]
   end
-  puts tachyons.size
+
+  if @items[r][i] == '^'
+    sum += bottom_up_traverse(r + 1, i - 1)
+    sum += bottom_up_traverse(r + 1, i + 1)
+  else
+    sum += bottom_up_traverse(r + 1, i)
+  end
+
+  @amor[[r, i]] = sum
+
+  sum
 
 end
 
@@ -44,6 +42,6 @@ File.foreach('day7input.txt').with_index do |line, i|
 
 end
 
-splits
+sum = traverse
 
-puts @count
+puts sum
