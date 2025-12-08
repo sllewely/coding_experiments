@@ -1,26 +1,19 @@
-
+class Problem
 @items = []
 
 # every junction box starts on its own circuit
 @circuits = []
+@connections = []
 
 @distances = []
 @distance_map = {}
 
+# calculate the 3d straight line dist between two points
 def straight_line_distance(jb1, jb2)
   Math.sqrt((jb1[0].to_i - jb2[0].to_i)**2 + (jb1[1].to_i - jb2[1].to_i)**2 + (jb1[2].to_i - jb2[2].to_i)**2)
 end
 
-def all_distances
-  @distances = (0...@items.length).map { Array.new(@items.length, 0) }
-
-  @items.each_with_index do |jb1, i|
-    @items.each_with_index do |jb2, j|
-      @distances[i][j] = straight_line_distance(jb1, jb2)
-    end
-  end
-end
-
+# create a map of all distances
 def all_distances_map(jbs)
   distance_map = {}
   jbs.each_with_index do |jb1, i|
@@ -41,7 +34,7 @@ def create_circuit(distance_map)
   min = Float::INFINITY
   pair = []
   distance_map.each do |(key, dist)|
-    next if @circuits[key[0]] == @circuits[key[1]]
+    next if @connections.has_key?(key)
     if dist < min
       min = dist
       pair = key
@@ -49,13 +42,15 @@ def create_circuit(distance_map)
   end
 
   (i, j) = pair
-  puts "merging #{@items[i].inspect} - #{@circuits[i]} and #{@items[j]} - #{@circuits[j]}"
+  # puts "merging #{@items[i].inspect} - #{@circuits[i]} and #{@items[j]} - #{@circuits[j]}"
 
+  return if pair.empty?
   # now we've found our nearest, add them to circuits
   to_merge = all_in_circuit(@circuits[j])
   to_merge.each do |m|
     @circuits[m] = @circuits[i]
   end
+  @connections[pair] = true
 end
 
 def all_in_circuit(circuit)
@@ -65,13 +60,6 @@ def all_in_circuit(circuit)
   end
   indices
 end
-
-def create_circuits
-  @circuits = (0...@items.length).to_a
-  1000.times { create_circuit }
-end
-
-@circuit_counts = {}
 
 def count_matches(circuits)
   circuit_counts = {}
@@ -86,6 +74,8 @@ end
 def entire_problem
   # generate all distances
   distance_map = all_distances_map(@items)
+
+  puts distance_map.inspect
 
   @circuits = (0...@items.length).to_a
 
@@ -108,13 +98,22 @@ def entire_problem
 end
 
 
-File.foreach('day8input.txt').with_index do |line, i|
+def initialize
+  @items = []
+  @circuits = []
+  @distance_map = {}
+  @connections = {}
 
-  items = line.chomp.split(',')
-  @items << items
+  File.foreach('day8input.txt').with_index do |line, i|
+
+    items = line.chomp.split(',')
+    @items << items
+
+  end
 
 end
 
-entire_problem
+end
 
-
+p = Problem.new
+p.entire_problem
