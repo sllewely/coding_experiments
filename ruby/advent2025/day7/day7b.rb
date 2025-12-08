@@ -1,3 +1,5 @@
+# this is terrible, see my optimized solution 7c
+
 
 @items = []
 @count = 0
