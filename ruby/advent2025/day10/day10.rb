@@ -59,6 +59,11 @@ def explode(configs, buttons)
   new_configs
 end
 
+# we're going to do bfs
+# keep a queue of states to process
+# and a queue of the next iteration (the result of processing)
+# we can skip any that have appeared in a previous queue
+
 def apply_buttons(config, buttons)
   new_configs = Set.new
   buttons.each do |button|
